@@ -263,7 +263,8 @@ module FastlaneCore
         # So this line tries to find the line which has "*** Error:" prefix from bottom of log
         error_line_index = @all_lines.rindex { |line| ERROR_REGEX.match?(line) }
 
-        @all_lines[(error_line_index || -20)..-1].each do |line|
+        start_index = [error_line_index || -20, -@all_lines.length].max
+        @all_lines[start_index..-1].each do |line|
           UI.important("[altool] #{line}")
         end
         UI.message("Application Loader output above ^")
